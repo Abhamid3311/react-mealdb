@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Button, Row } from 'react-bootstrap';
+import Meal from './Meal';
+
 
 const Resturants = () => {
     const [searchText, setSearchText] = useState('');
@@ -7,7 +10,10 @@ const Resturants = () => {
         const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
         fetch(url)
             .then(res => res.json())
-            .then(data => setMeals(data.meals));
+            .then(data => {
+                setMeals(data.meals);
+                console.log(data.meals);
+            });
     }, [searchText]);
 
 
@@ -16,9 +22,17 @@ const Resturants = () => {
     };
     return (
         <div>
-            <h2>Find Food What You Want</h2>
-            <input onChange={searchTextField} type="text" />
-            <h3>Result Found: {meals.length}</h3>
+            <h2 className='text-success my-3'>Food Ninja</h2>
+            <input placeholder='search your food' onChange={searchTextField} type="text" />
+
+            <Row className=''>
+                {
+                    meals.map(meal => <Meal
+                        key={meal.idMeal}
+                        meal={meal}
+                    ></Meal>)
+                }
+            </Row>
         </div>
     );
 };
